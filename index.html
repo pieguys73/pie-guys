@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pie Guys — Seriously Good Pie</title>
+<link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --red: #C8102E;
+    --yellow: #F5E6C8;
+    --cream: #F7F3EE;
+    --brown: #000033;
+    --orange: #1a2f5e;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--cream);
+    color: var(--brown);
+    font-family: 'DM Sans', sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; width: 100%; z-index: 100;
+    background: var(--brown);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 6vw;
+    height: 64px;
+  }
+  .nav-logo {
+    font-family: 'Lilita One', cursive;
+    font-size: 1.6rem;
+    color: #F5E6C8;
+    letter-spacing: 1px;
+    text-decoration: none;
+  }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a {
+    color: var(--cream);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: .95rem;
+    letter-spacing: .5px;
+    transition: color .2s;
+  }
+  .nav-links a:hover { color: #C8102E; }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    padding-top: 64px;
+    background: var(--brown);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 0;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    width: 600px; height: 600px;
+    background: var(--red);
+    border-radius: 50%;
+    top: -150px; right: -100px;
+    opacity: .15;
+  }
+
+  .hero-text {
+    padding: 0 6vw;
+    animation: slideUp .8s ease both;
+  }
+  .hero-eyebrow {
+    display: inline-block;
+    background: var(--red);
+    color: #fff;
+    font-weight: 700;
+    font-size: .8rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 4px 14px;
+    border-radius: 2px;
+    margin-bottom: 1.2rem;
+  }
+  .hero-title {
+    font-family: 'Lilita One', cursive;
+    font-size: clamp(3.5rem, 7vw, 6rem);
+    color: var(--cream);
+    line-height: 1;
+    margin-bottom: 1.2rem;
+  }
+  .hero-title span { color: #F5E6C8; }
+  .hero-sub {
+    color: #a8bcd8;
+    font-size: 1.15rem;
+    line-height: 1.6;
+    max-width: 420px;
+    margin-bottom: 2rem;
+  }
+  .btn-group { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .btn {
+    display: inline-block;
+    padding: 14px 32px;
+    border-radius: 6px;
+    font-weight: 700;
+    font-size: 1rem;
+    text-decoration: none;
+    transition: transform .15s, box-shadow .15s;
+    cursor: pointer;
+    border: none;
+  }
+  .btn:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,.3); }
+  .btn-primary { background: var(--red); color: #fff; }
+  .btn-outline { background: transparent; color: #F5E6C8; border: 2px solid #F5E6C8; }
+
+  .hero-visual {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem 4vw;
+    animation: slideUp .8s .2s ease both;
+  }
+  .pie-circle {
+    width: min(420px, 45vw);
+    height: min(420px, 45vw);
+    background: var(--red);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: min(180px, 20vw);
+    box-shadow: 0 0 0 20px rgba(200,16,46,.2), 0 0 0 40px rgba(200,16,46,.08);
+    animation: float 3s ease-in-out infinite;
+  }
+
+  /* ── MARQUEE ── */
+  .marquee-bar {
+    background: var(--red);
+    padding: 14px 0;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .marquee-track {
+    display: inline-flex;
+    gap: 3rem;
+    animation: marquee 18s linear infinite;
+  }
+  .marquee-track span {
+    font-family: 'Lilita One', cursive;
+    font-size: 1.1rem;
+    color: #fff;
+    letter-spacing: 1px;
+  }
+  .marquee-track span.dot { color: #F5E6C8; }
+
+  /* ── MENU ── */
+  #menu {
+    padding: 100px 6vw;
+    background: var(--cream);
+  }
+  .section-label {
+    font-family: 'Lilita One', cursive;
+    font-size: clamp(2.2rem, 4vw, 3.2rem);
+    color: var(--brown);
+    margin-bottom: .5rem;
+  }
+  .section-label span { color: var(--red); }
+  .section-sub {
+    color: #4a5568;
+    font-size: 1.05rem;
+    margin-bottom: 3rem;
+  }
+
+  .menu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.5rem;
+  }
+  .menu-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 1.8rem;
+    position: relative;
+    overflow: hidden;
+    transition: transform .2s, box-shadow .2s;
+    border: 2px solid transparent;
+  }
+  .menu-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 16px 40px rgba(13,27,62,.15);
+    border-color: var(--red);
+  }
+  .menu-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 5px;
+    background: var(--red);
+  }
+  .menu-icon { font-size: 2.8rem; margin-bottom: .8rem; }
+  .menu-name {
+    font-family: 'Lilita One', cursive;
+    font-size: 1.4rem;
+    color: var(--brown);
+    margin-bottom: .4rem;
+  }
+  .menu-desc { color: #4a5568; font-size: .92rem; line-height: 1.5; margin-bottom: 1rem; }
+  .menu-price {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--red);
+  }
+  .badge {
+    position: absolute;
+    top: 1rem; right: 1rem;
+    background: var(--brown);
+    color: #F5E6C8;
+    font-size: .7rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 20px;
+  }
+
+  /* ── ORDER ── */
+  #order {
+    padding: 100px 6vw;
+    background: var(--brown);
+    position: relative;
+    overflow: hidden;
+  }
+  #order::after {
+    content: '🥧';
+    position: absolute;
+    font-size: 300px;
+    right: -40px; bottom: -40px;
+    opacity: .06;
+    pointer-events: none;
+  }
+  #order .section-label { color: var(--cream); }
+  #order .section-sub { color: #a8bcd8; }
+
+  .order-form {
+    background: #fff;
+    border-radius: 20px;
+    padding: 2.5rem;
+    max-width: 600px;
+    display: grid;
+    gap: 1.2rem;
+  }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .form-group { display: flex; flex-direction: column; gap: .4rem; }
+  .form-group label {
+    font-weight: 600;
+    font-size: .88rem;
+    color: var(--brown);
+    letter-spacing: .4px;
+  }
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    padding: 11px 14px;
+    border: 2px solid #e8ddd4;
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: .95rem;
+    color: var(--brown);
+    background: var(--cream);
+    transition: border-color .2s;
+    outline: none;
+  }
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus { border-color: var(--red); }
+  .form-group textarea { resize: vertical; min-height: 90px; }
+  .order-submit {
+    width: 100%;
+    padding: 15px;
+    background: var(--red);
+    color: #fff;
+    font-family: 'Lilita One', cursive;
+    font-size: 1.2rem;
+    letter-spacing: 1px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background .2s, transform .15s;
+  }
+  .order-submit:hover { background: #c4200a; transform: translateY(-2px); }
+
+  /* modal */
+  .modal-overlay {
+    display: none;
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,.6);
+    z-index: 999;
+    align-items: center; justify-content: center;
+  }
+  .modal-overlay.show { display: flex; }
+  .modal {
+    background: #fff;
+    border-radius: 20px;
+    padding: 3rem 2.5rem;
+    text-align: center;
+    max-width: 380px;
+    width: 90%;
+    animation: popIn .3s ease;
+  }
+  .modal-icon { font-size: 4rem; margin-bottom: 1rem; }
+  .modal h3 { font-family: 'Lilita One', cursive; font-size: 1.8rem; color: var(--brown); margin-bottom: .6rem; }
+  .modal p { color: #7a5c44; line-height: 1.6; margin-bottom: 1.5rem; }
+  .modal-close {
+    background: var(--red); color: #fff;
+    border: none; border-radius: 8px;
+    padding: 12px 28px;
+    font-weight: 700; font-size: 1rem;
+    cursor: pointer;
+    transition: background .2s;
+  }
+  .modal-close:hover { background: #c4200a; }
+
+  /* ── ABOUT ── */
+  #about {
+    padding: 100px 6vw;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: center;
+    background: var(--cream);
+  }
+  .about-visual {
+    display: flex;
+    align-items: center; justify-content: center;
+  }
+  .about-blob {
+    width: 360px; height: 360px;
+    background: var(--red);
+    border-radius: 60% 40% 55% 45% / 50% 60% 40% 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 130px;
+    animation: morph 6s ease-in-out infinite;
+  }
+  .about-text .section-label { margin-bottom: .6rem; }
+  .about-text p { color: #4a5568; line-height: 1.8; margin-bottom: 1rem; font-size: 1rem; }
+  .stat-row { display: flex; gap: 2rem; margin-top: 1.5rem; }
+  .stat { }
+  .stat-num {
+    font-family: 'Lilita One', cursive;
+    font-size: 2.4rem;
+    color: var(--red);
+    line-height: 1;
+  }
+  .stat-lbl { font-size: .85rem; color: #4a5568; font-weight: 600; margin-top: 2px; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--brown);
+    color: #a8bcd8;
+    padding: 40px 6vw;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  .footer-logo {
+    font-family: 'Lilita One', cursive;
+    font-size: 1.4rem;
+    color: #F5E6C8;
+  }
+  footer p { font-size: .88rem; }
+
+  /* ── ANIMATIONS ── */
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(40px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50%       { transform: translateY(-18px); }
+  }
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+  @keyframes morph {
+    0%, 100% { border-radius: 60% 40% 55% 45% / 50% 60% 40% 50%; }
+    50%       { border-radius: 40% 60% 45% 55% / 60% 40% 55% 45%; }
+  }
+  @keyframes popIn {
+    from { transform: scale(.8); opacity: 0; }
+    to   { transform: scale(1); opacity: 1; }
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    .hero { grid-template-columns: 1fr; }
+    .hero-visual { display: none; }
+    .form-row { grid-template-columns: 1fr; }
+    #about { grid-template-columns: 1fr; }
+    .about-visual { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">
+    <img src="Pie_guy_new_logo.png" alt="Pie Guys" style="height:48px;width:48px;object-fit:contain;border-radius:6px;">
+  </a>
+  <ul class="nav-links">
+    <li><a href="#menu">Menu</a></li>
+    <li><a href="#order">Order</a></li>
+    <li><a href="#ingredients">Ingredients</a></li>
+    <li><a href="#about">About</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-text">
+    <div class="hero-eyebrow">Fresh Baked Daily</div>
+    <h1 class="hero-title">We're the<br><span>Pie Guys.</span></h1>
+    <p class="hero-sub">Outrageously good sweet pies made from scratch. Flaky crusts, real fruit, and fillings that'll make you come back every single time.</p>
+    <div class="btn-group">
+      <a href="#order" class="btn btn-primary">Order Now</a>
+      <a href="#menu" class="btn btn-outline">See the Menu</a>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="pie-circle">🥧</div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-bar">
+  <div class="marquee-track">
+    <span>FRESH BAKED</span><span class="dot">✦</span>
+    <span>REAL FRUIT</span><span class="dot">✦</span>
+    <span>HOMEMADE CRUST</span><span class="dot">✦</span>
+    <span>SWEET PIES</span><span class="dot">✦</span>
+    <span>ORDER TODAY</span><span class="dot">✦</span>
+    <span>PIE GUYS</span><span class="dot">✦</span>
+    <!-- duplicate for seamless loop -->
+    <span>FRESH BAKED</span><span class="dot">✦</span>
+    <span>REAL FRUIT</span><span class="dot">✦</span>
+    <span>HOMEMADE CRUST</span><span class="dot">✦</span>
+    <span>SWEET PIES</span><span class="dot">✦</span>
+    <span>ORDER TODAY</span><span class="dot">✦</span>
+    <span>PIE GUYS</span><span class="dot">✦</span>
+  </div>
+</div>
+
+<!-- MENU -->
+<section id="menu">
+  <p class="section-label">Our <span>Menu</span></p>
+  <p class="section-sub">Every pie is made fresh to order. Pick your favorite.</p>
+  <div class="menu-grid">
+    <!-- HOT PIES -->
+    <div style="grid-column:1/-1; margin-bottom:.5rem;">
+      <span style="font-family:'Lilita One',cursive;font-size:1.1rem;color:var(--red);letter-spacing:1px;">🔥 HOT PIES — $5.99</span>
+      <span style="color:#4a5568;font-size:.9rem;margin-left:.8rem;">Apple · Blueberry · Pumpkin</span>
+    </div>
+
+    <div class="menu-card">
+      <div class="badge">🔥 Best Seller</div>
+      <div class="menu-icon">🍎</div>
+      <div class="menu-name">Apple Pie</div>
+      <p class="menu-desc">Classic cinnamon-spiced apples baked in a golden, flaky homemade crust. The one that started it all.</p>
+      <div class="menu-price">$5.99 <span style="font-size:.85rem;font-weight:500;color:#4a5568;">/ 4-inch mini</span></div>
+    </div>
+
+    <div class="menu-card">
+      <div class="menu-icon">🫐</div>
+      <div class="menu-name">Blueberry Pie</div>
+      <p class="menu-desc">Packed with sweet blueberries and a hint of lemon, all tucked under a buttery lattice crust.</p>
+      <div class="menu-price">$5.99 <span style="font-size:.85rem;font-weight:500;color:#4a5568;">/ 4-inch mini</span></div>
+    </div>
+
+    <div class="menu-card">
+      <div class="menu-icon">🎃</div>
+      <div class="menu-name">Pumpkin Pie</div>
+      <p class="menu-desc">Smooth, warmly spiced pumpkin filling baked inside a homemade crust. Cozy in every bite.</p>
+      <div class="menu-price">$5.99 <span style="font-size:.85rem;font-weight:500;color:#4a5568;">/ 4-inch mini</span></div>
+    </div>
+
+    <!-- COLD PIES -->
+    <div style="grid-column:1/-1;margin-top:1rem;margin-bottom:.5rem;">
+      <span style="font-family:'Lilita One',cursive;font-size:1.1rem;color:var(--brown);letter-spacing:1px;">❄️ COLD PIES — $6.99</span>
+      <span style="color:#4a5568;font-size:.9rem;margin-left:.8rem;">Key Lime · Cheesecake</span>
+    </div>
+
+    <div class="menu-card">
+      <div class="badge">⭐ Fan Fave</div>
+      <div class="menu-icon">🍋</div>
+      <div class="menu-name">Key Lime Pie</div>
+      <p class="menu-desc">Tangy, creamy key lime filling in a buttery graham crust. Chilled and refreshing every single time.</p>
+      <div class="menu-price">$6.99 <span style="font-size:.85rem;font-weight:500;color:#4a5568;">/ 4-inch mini</span></div>
+    </div>
+
+    <div class="menu-card">
+      <div class="menu-icon">🍰</div>
+      <div class="menu-name">Cheesecake Pie</div>
+      <p class="menu-desc">Smooth, velvety cheesecake filling in a classic crust. Simple, rich, and absolutely irresistible.</p>
+      <div class="menu-price">$6.99 <span style="font-size:.85rem;font-weight:500;color:#4a5568;">/ 4-inch mini</span></div>
+    </div>
+
+    <!-- WHOLE PIE -->
+    <div style="grid-column:1/-1;margin-top:1rem;margin-bottom:.5rem;">
+      <span style="font-family:'Lilita One',cursive;font-size:1.1rem;color:var(--brown);letter-spacing:1px;">🥧 WHOLE PIES</span>
+      <span style="color:#4a5568;font-size:.9rem;margin-left:.8rem;">Custom orders available</span>
+    </div>
+
+    <div class="menu-card">
+      <div class="badge">📦 Bulk</div>
+      <div class="menu-icon">🎉</div>
+      <div class="menu-name">Whole Pie Order</div>
+      <p class="menu-desc">Need a full-size pie for an event, party, or just because? Place a custom whole pie order, any flavor, made fresh.</p>
+      <div class="menu-price">Inquire to order</div>
+    </div>
+  </div>
+</section>
+
+<!-- ORDER -->
+<section id="order">
+  <p class="section-label">Place an <span style="color:#F5E6C8">Order</span></p>
+  <p class="section-sub">Click below to fill out our order form. Questions? Email us at <a href="mailto:pieguys73@gmail.com" style="color:#F5E6C8;font-weight:600;">pieguys73@gmail.com</a></p>
+  <div style="display:flex;flex-direction:column;gap:1rem;max-width:600px;">
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLSf5N1El_w3BRhGAvGo5abYYh5LdYkaW46DxNkyvmDpaFJpOSg/viewform" target="_blank" class="order-submit" style="display:inline-block;text-align:center;text-decoration:none;padding:18px 32px;font-size:1.3rem;">
+      ORDER NOW 🥧
+    </a>
+    <p style="color:#a8bcd8;font-size:.9rem;">Opens our order form in a new tab. Takes less than a minute!</p>
+  </div>
+</section>
+
+<!-- LINKTREE -->
+<section style="padding:60px 6vw;background:var(--cream);text-align:center;">
+  <p style="font-family:'Lilita One',cursive;font-size:1.4rem;color:var(--brown);margin-bottom:.4rem;">Find Us Everywhere</p>
+  <p style="color:#4a5568;font-size:.95rem;margin-bottom:1.5rem;">All our links in one place.</p>
+  <a href="https://linktr.ee/officialpieguys" target="_blank" style="display:inline-flex;align-items:center;gap:.6rem;background:var(--brown);color:#F5E6C8;font-family:'Lilita One',cursive;font-size:1.1rem;padding:14px 32px;border-radius:8px;text-decoration:none;transition:transform .15s,box-shadow .15s;" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 24px rgba(0,0,0,.2)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
+    🔗 linktr.ee/officialpieguys
+  </a>
+</section>
+
+<!-- INGREDIENTS -->
+<section id="ingredients" style="padding:100px 6vw;background:var(--brown);">
+  <p class="section-label" style="color:var(--cream);">What's <span style="color:var(--red);">Inside</span></p>
+  <p class="section-sub" style="color:#a8bcd8;">We keep it simple. Real ingredients, nothing weird.</p>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.5rem;margin-top:1rem;">
+
+    <div style="background:rgba(255,255,255,0.06);border-radius:16px;padding:1.8rem;border:2px solid rgba(255,255,255,0.1);">
+      <div style="font-size:2rem;margin-bottom:.6rem;">🍎</div>
+      <div style="font-family:'Lilita One',cursive;font-size:1.2rem;color:var(--cream);margin-bottom:.5rem;">Apple Pie</div>
+      <p style="color:#a8bcd8;font-size:.9rem;line-height:1.6;">Ingredients coming soon.</p>
+    </div>
+
+    <div style="background:rgba(255,255,255,0.06);border-radius:16px;padding:1.8rem;border:2px solid rgba(255,255,255,0.1);">
+      <div style="font-size:2rem;margin-bottom:.6rem;">🫐</div>
+      <div style="font-family:'Lilita One',cursive;font-size:1.2rem;color:var(--cream);margin-bottom:.5rem;">Blueberry Pie</div>
+      <p style="color:#a8bcd8;font-size:.9rem;line-height:1.6;">Ingredients coming soon.</p>
+    </div>
+
+    <div style="background:rgba(255,255,255,0.06);border-radius:16px;padding:1.8rem;border:2px solid rgba(255,255,255,0.1);">
+      <div style="font-size:2rem;margin-bottom:.6rem;">🎃</div>
+      <div style="font-family:'Lilita One',cursive;font-size:1.2rem;color:var(--cream);margin-bottom:.5rem;">Pumpkin Pie</div>
+      <p style="color:#a8bcd8;font-size:.9rem;line-height:1.6;">Ingredients coming soon.</p>
+    </div>
+
+    <div style="background:rgba(255,255,255,0.06);border-radius:16px;padding:1.8rem;border:2px solid rgba(255,255,255,0.1);">
+      <div style="font-size:2rem;margin-bottom:.6rem;">🍋</div>
+      <div style="font-family:'Lilita One',cursive;font-size:1.2rem;color:var(--cream);margin-bottom:.5rem;">Key Lime Pie</div>
+      <p style="color:#a8bcd8;font-size:.9rem;line-height:1.6;">Ingredients coming soon.</p>
+    </div>
+
+    <div style="background:rgba(255,255,255,0.06);border-radius:16px;padding:1.8rem;border:2px solid rgba(255,255,255,0.1);">
+      <div style="font-size:2rem;margin-bottom:.6rem;">🍰</div>
+      <div style="font-family:'Lilita One',cursive;font-size:1.2rem;color:var(--cream);margin-bottom:.5rem;">Cheesecake</div>
+      <p style="color:#a8bcd8;font-size:.9rem;line-height:1.6;">Ingredients coming soon.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-visual">
+    <div class="about-blob">🥧</div>
+  </div>
+  <div class="about-text">
+    <p class="section-label">Who Are the <span>Pie Guys?</span></p>
+    <p>Pie Guys is a small business aimed at giving everyone access to great, quality pie. Everything is handcrafted from scratch using only the best ingredients, and we hold every single pie to the highest standard we can.</p>
+    <p>Real ingredients, real effort, real good pie.</p>
+    <div class="stat-row">
+      <div class="stat">
+        <div class="stat-num">6+</div>
+        <div class="stat-lbl">Pie Flavors</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">100%</div>
+        <div class="stat-lbl">Homemade</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">😍</div>
+        <div class="stat-lbl">Happy Customers</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">
+    <img src="Pie_guy_new_logo.png" alt="Pie Guys" style="height:52px;width:52px;object-fit:contain;border-radius:8px;vertical-align:middle;">
+  </div>
+  <p>© 2026 Pie Guys. Flex dat sweet tooth.</p>
+</footer>
+
+<!-- ORDER MODAL -->
+<div class="modal-overlay" id="orderModal">
+  <div class="modal">
+    <div class="modal-icon">🎉</div>
+    <h3>Order Received!</h3>
+    <p>Thanks! We got your pie order and we'll be in touch soon to confirm pickup. Get ready for something delicious.</p>
+    <button class="modal-close" onclick="closeModal()">Awesome, thanks!</button>
+  </div>
+</div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  function handleOrder() {
+    setTimeout(() => {
+      document.getElementById('orderModal').classList.add('show');
+      document.getElementById('orderForm').reset();
+    }, 500);
+  }
+  functi
